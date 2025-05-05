@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Mortgage Calculator | HomeLoan Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            border-radius: 10px;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .calculator-container {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .calculator-form {
+            flex: 1;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .calculator-form h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 22px;
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+        
+        .range-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .range-container input[type="range"] {
+            flex: 1;
+        }
+        
+        .range-value {
+            min-width: 60px;
+            text-align: center;
+            background-color: var(--light-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-advanced {
+            background-color: transparent;
+            color: var(--secondary-color);
+            border: 1px solid var(--secondary-color);
+            margin-top: 10px;
+        }
+        
+        .btn-advanced:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .advanced-options {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+        
+        .advanced-options.show {
+            display: block;
+        }
+        
+        .results-container {
+            flex: 1;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-color);
+        }
+        
+        .results-header h3 {
+            color: var(--primary-color);
+            font-size: 22px;
+        }
+        
+        .export-options button {
+            background: none;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-card {
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .summary-card h4 {
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .summary-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .summary-card .monthly-payment .value {
+            color: var(--secondary-color);
+            font-size: 28px;
+        }
+        
+        .amortization-chart {
+            margin-bottom: 30px;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 500;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--secondary-color);
+            color: var(--secondary-color);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            background: none;
+            border: 1px solid #ddd;
+            padding: 8px 15px;
+            margin: 0 5px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .pagination button.active {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .footer-column h4 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+        }
+        
+        @media (max-width: 992px) {
+            .calculator-container {
+                flex-direction: column;
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                justify-content: center;
+            }
+            
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <img src="https://via.placeholder.com/40x40" alt="HomeLoan Pro Logo">
+                <h1>Home<span>Loan</span> Pro</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Mortgages</a></li>
+                    <li><a href="#">Rates</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <section class="hero">
+            <h2>Advanced Mortgage Calculator</h2>
+            <p>Calculate your monthly payments, compare loan options, and plan your financial future with our comprehensive mortgage calculator.</p>
+        </section>
+        
+        <div class="calculator-container">
+            <div class="calculator-form">
+                <h3>Loan Details</h3>
+                <form id="mortgageForm">
+                    <div class="form-group">
+                        <label for="homePrice">Home Price ($)</label>
+                        <input type="number" id="homePrice" class="form-control" value="300000" min="0" step="1000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="downPayment">Down Payment ($)</label>
+                        <input type="number" id="downPayment" class="form-control" value="60000" min="0" step="1000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="downPaymentPercent">Down Payment (%)</label>
+                        <div class="range-container">
+                            <input type="range" id="downPaymentPercent" class="form-control" min="0" max="100" value="20" step="1">
+                            <span class="range-value" id="downPaymentPercentValue">20%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loanTerm">Loan Term (years)</label>
+                        <select id="loanTerm" class="form-control">
+                            <option value="10">10 years</option>
+                            <option value="15">15 years</option>
+                            <option value="20">20 years</option>
+                            <option value="25">25 years</option>
+                            <option value="30" selected>30 years</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="interestRate">Interest Rate (%)</label>
+                        <div class="range-container">
+                            <input type="range" id="interestRate" class="form-control" min="1" max="10" value="3.5" step="0.1">
+                            <span class="range-value" id="interestRateValue">3.5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" class="form-control" value="">
+                    </div>
+                    
+                    <button type="button" id="calculateBtn" class="btn btn-block">Calculate</button>
+                    <button type="button" id="advancedBtn" class="btn btn-block btn-advanced">Advanced Options <i class="fas fa-chevron-down"></i></button>
+                    
+                    <div class="advanced-options" id="advancedOptions">
+                        <div class="form-group">
+                            <label for="propertyTax">Annual Property Tax ($)</label>
+                            <input type="number" id="propertyTax" class="form-control" value="3000" min="0" step="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="homeInsurance">Annual Home Insurance ($)</label>
+                            <input type="number" id="homeInsurance" class="form-control" value="1200" min="0" step="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="pmi">PMI (%)</label>
+                            <input type="number" id="pmi" class="form-control" value="0.5" min="0" max="2" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="hoa">Monthly HOA Fees ($)</label>
+                            <input type="number" id="hoa" class="form-control" value="0" min="0" step="10">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="extraPayment">Extra Monthly Payment ($)</label>
+                            <input type="number" id="extraPayment" class="form-control" value="0" min="0" step="10">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="results-container">
+                <div class="results-header">
+                    <h3>Mortgage Summary</h3>
+                    <div class="export-options">
+                        <button id="printBtn"><i class="fas fa-print"></i> Print</button>
+                        <button id="exportBtn"><i class="fas fa-file-export"></i> Export</button>
+                    </div>
+                </div>
+                
+                <div class="summary-cards">
+                    <div class="summary-card monthly-payment">
+                        <h4>Monthly Payment</h4>
+                        <div class="value">$1,347</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Total Interest</h4>
+                        <div class="value">$179,674</div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>Payoff Date</h4>
+                        <div class="value">May 2051</div>
+                    </div>
+                </div>
+                
+                <div class="amortization-chart">
+                    <h4>Payment Breakdown</h4>
+                    <div class="chart-container">
+                        <!-- Chart will be rendered here -->
+                        <canvas id="paymentChart" width="100%" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="amortization">Amortization</div>
+                    <div class="tab" data-tab="summary">Summary</div>
+                    <div class="tab" data-tab="compare">Compare</div>
+                </div>
+                
+                <div class="tab-content active" id="amortizationTab">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Taxes & Fees</th>
+                                <th>Total Payment</th>
+                                <th>Remaining Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="amortizationTableBody">
+                            <!-- Amortization data will be populated here -->
+                        </tbody>
+                    </table>
+                    <div class="pagination">
+                        <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>4</button>
+                        <button>5</button>
+                        <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="summaryTab">
+                    <h4>Loan Summary</h4>
+                    <table>
+                        <tr>
+                            <td>Loan Amount</td>
+                            <td>$240,000</td>
+                        </tr>
+                        <tr>
+                            <td>Total Interest Paid</td>
+                            <td>$179,674</td>
+                        </tr>
+                        <tr>
+                            <td>Total Cost of Loan</td>
+                            <td>$419,674</td>
+                        </tr>
+                        <tr>
+                            <td>Payoff Date</td>
+                            <td>May 2051</td>
+                        </tr>
+                        <tr>
+                            <td>Interest Savings (vs 30-year)</td>
+                            <td>$0</td>
+                        </tr>
+                    </table>
+                    
+                    <h4 style="margin-top: 20px;">Payment Breakdown</h4>
+                    <table>
+                        <tr>
+                            <td>Principal & Interest</td>
+                            <td>$1,078</td>
+                        </tr>
+                        <tr>
+                            <td>Property Tax</td>
+                            <td>$250</td>
+                        </tr>
+                        <tr>
+                            <td>Home Insurance</td>
+                            <td>$100</td>
+                        </tr>
+                        <tr>
+                            <td>PMI</td>
+                            <td>$0</td>
+                        </tr>
+                        <tr>
+                            <td>HOA Fees</td>
+                            <td>$0</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Monthly Payment</strong></td>
+                            <td><strong>$1,347</strong></td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="tab-content" id="compareTab">
+                    <h4>Compare Loan Options</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Term</th>
+                                <th>Rate</th>
+                                <th>Monthly Payment</th>
+                                <th>Total Interest</th>
+                                <th>Savings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>15-year</td>
+                                <td>2.75%</td>
+                                <td>$1,627</td>
+                                <td>$52,860</td>
+                                <td>$126,814</td>
+                            </tr>
+                            <tr>
+                                <td>20-year</td>
+                                <td>3.00%</td>
+                                <td>$1,331</td>
+                                <td>$79,440</td>
+                                <td>$100,234</td>
+                            </tr>
+                            <tr>
+                                <td>30-year</td>
+                                <td>3.50%</td>
+                                <td>$1,078</td>
+                                <td>$179,674</td>
+                                <td>$0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3>Comprehensive Calculations</h3>
+                <p>Our calculator considers all aspects of your mortgage including taxes, insurance, PMI, and HOA fees for accurate results.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Amortization Schedule</h3>
+                <p>View detailed year-by-year breakdowns of your payments to understand how much goes toward principal vs interest.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3>Loan Comparison</h3>
+                <p>Compare different loan terms and rates to find the option that best fits your financial situation.</p>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>HomeLoan Pro</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Mortgage Guide</a></li>
+                        <li><a href="#">First-Time Buyers</a></li>
+                        <li><a href="#">Refinancing</a></li>
+                        <li><a href="#">Calculators</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                        <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                        <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                        <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 HomeLoan Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // DOM Elements
+        const advancedBtn = document.getElementById('advancedBtn');
+        const advancedOptions = document.getElementById('advancedOptions');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        // Range inputs
+        const downPaymentPercent = document.getElementById('downPaymentPercent');
+        const downPaymentPercentValue = document.getElementById('downPaymentPercentValue');
+        const interestRate = document.getElementById('interestRate');
+        const interestRateValue = document.getElementById('interestRateValue');
+        
+        // Form inputs
+        const homePrice = document.getElementById('homePrice');
+        const downPayment = document.getElementById('downPayment');
+        
+        // Initialize date field with today's date
+        document.getElementById('startDate').valueAsDate = new Date();
+        
+        // Toggle advanced options
+        advancedBtn.addEventListener('click', function() {
+            advancedOptions.classList.toggle('show');
+            const icon = this.querySelector('i');
+            if (advancedOptions.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+                this.textContent = 'Advanced Options ';
+                this.appendChild(icon);
+            } else {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+                this.textContent = 'Advanced Options ';
+                this.appendChild(icon);
+            }
+        });
+        
+        // Update range value displays
+        downPaymentPercent.addEventListener('input', function() {
+            downPaymentPercentValue.textContent = this.value + '%';
+            // Update down payment amount based on percentage
+            const percentage = parseFloat(this.value) / 100;
+            downPayment.value = Math.round(homePrice.value * percentage);
+        });
+        
+        interestRate.addEventListener('input', function() {
+            interestRateValue.textContent = this.value + '%';
+        });
+        
+        // Update down payment percentage when dollar amount changes
+        downPayment.addEventListener('input', function() {
+            const percentage = (this.value / homePrice.value) * 100;
+            downPaymentPercent.value = percentage.toFixed(0);
+            downPaymentPercentValue.textContent = percentage.toFixed(0) + '%';
+        });
+        
+        // Tab switching
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId + 'Tab').classList.add('active');
+            });
+        });
+        
+        // Initialize chart
+        const ctx = document.getElementById('paymentChart').getContext('2d');
+        const paymentChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Principal', 'Interest', 'Taxes', 'Insurance', 'PMI', 'HOA'],
+                datasets: [{
+                    data: [500, 400, 200, 100, 0, 0],
+                    backgroundColor: [
+                        '#3498db',
+                        '#e74c3c',
+                        '#2ecc71',
+                        '#f39c12',
+                        '#9b59b6',
+                        '#1abc9c'
+                    ],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = Math.round((value / total) * 100);
+                                return `${label}: $${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Sample amortization data
+        function generateAmortizationData() {
+            const tableBody = document.getElementById('amortizationTableBody');
+            tableBody.innerHTML = '';
+            
+            for (let year = 1; year <= 5; year++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>Year ${year}</td>
+                    <td>$${(year * 5000).toLocaleString()}</td>
+                    <td>$${(year * 4000).toLocaleString()}</td>
+                    <td>$${(year * 3000).toLocaleString()}</td>
+                    <td>$${(year * 12000).toLocaleString()}</td>
+                    <td>$${(240000 - (year * 5000)).toLocaleString()}</td>
+                `;
+                tableBody.appendChild(row);
+            }
+        }
+        
+        // Initialize amortization table
+        generateAmortizationData();
+        
+        // Calculate button functionality
+        calculateBtn.addEventListener('click', function() {
+            // In a real implementation, this would perform all the mortgage calculations
+            // and update the results, charts, and tables accordingly
+            alert('Calculations would be performed here with the provided inputs. This is just a frontend demo.');
+        });
+    </script>
+</body>
+</html>
