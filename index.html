@@ -775,7 +775,7 @@
             </div>
         </section>
     </main>
-    <footer>
+   <footer>
   <div class="container" style="text-align: center; padding: 20px 0;">
     <div style="display: inline-block; margin: 0 auto;">
       <a href="#" onclick="showModal('privacy')" style="color: #bdc3c7; text-decoration: none; margin: 0 15px;">Privacy Policy</a>
@@ -790,9 +790,9 @@
   </div>
 
   <!-- Privacy Policy Modal -->
-  <div id="privacy-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h2>Privacy Policy</h2>
+  <div id="privacy-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; overflow:auto; padding:20px; box-sizing:border-box;">
+    <div style="background:#fff; max-width:800px; margin:50px auto; padding:30px; border-radius:5px; position:relative;">
+      <h2 style="margin-top:0;">Privacy Policy</h2>
       <p><strong>Last Updated:</strong> <span id="privacy-date"></span></p>
       
       <h3>1. Information Collection</h3>
@@ -804,14 +804,14 @@
       <h3>3. Security Measures</h3>
       <p>We implement industry-standard security protocols to protect your information. Calculations are performed locally when possible.</p>
       
-      <button onclick="closeModal()" class="modal-close-btn">Close</button>
+      <button onclick="closeModal()" style="padding:10px 20px; background:#3498db; color:white; border:none; border-radius:4px; cursor:pointer; margin-top:20px;">Close</button>
     </div>
   </div>
 
   <!-- Terms of Service Modal -->
-  <div id="terms-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h2>Terms of Service</h2>
+  <div id="terms-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; overflow:auto; padding:20px; box-sizing:border-box;">
+    <div style="background:#fff; max-width:800px; margin:50px auto; padding:30px; border-radius:5px; position:relative;">
+      <h2 style="margin-top:0;">Terms of Service</h2>
       <p><strong>Last Updated:</strong> <span id="terms-date"></span></p>
       
       <h3>1. Calculator Use</h3>
@@ -823,46 +823,10 @@
       <h3>3. Liability</h3>
       <p>HomeLoan Pro is not liable for financial decisions made based on calculator results. We make no warranties about calculation accuracy.</p>
       
-      <button onclick="closeModal()" class="modal-close-btn">Close</button>
+      <button onclick="closeModal()" style="padding:10px 20px; background:#3498db; color:white; border:none; border-radius:4px; cursor:pointer; margin-top:20px;">Close</button>
     </div>
   </div>
 </footer>
-
-<style>
-  /* Modal Styles */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: #fff;
-    max-width: 800px;
-    width: 90%;
-    max-height: 80vh;
-    padding: 30px;
-    border-radius: 5px;
-    overflow-y: auto;
-  }
-  
-  .modal-close-btn {
-    padding: 10px 20px;
-    background: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-</style>
 
 <script>
   // Set current year
@@ -874,26 +838,25 @@
 
   // Show modal function
   function showModal(type) {
-    document.getElementById(type + '-modal').style.display = 'flex';
+    document.getElementById(type + '-modal').style.display = 'block';
     document.body.style.overflow = 'hidden';
   }
   
   // Close modal function
   function closeModal() {
-    document.querySelectorAll('.modal').forEach(modal => {
-      modal.style.display = 'none';
-    });
+    document.getElementById('privacy-modal').style.display = 'none';
+    document.getElementById('terms-modal').style.display = 'none';
     document.body.style.overflow = 'auto';
   }
   
   // Close when clicking outside modal content
   window.addEventListener('click', function(event) {
-    if (event.target.classList.contains('modal')) {
+    if (event.target.id === 'privacy-modal' || event.target.id === 'terms-modal') {
       closeModal();
     }
   });
 </script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // DOM Elements
     const advancedBtn = document.getElementById('advancedBtn');
